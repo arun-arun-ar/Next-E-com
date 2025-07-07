@@ -21,9 +21,9 @@ export async function connectDatabase(): Promise<void> {
 
   try {
     //connect to mongodb
-    const database = await mongoose.connect(process.env.MONGODB_URL);
+    const connectDB = await mongoose.connect(process.env.MONGODB_URL);
     // Store the readyState (1 = connected) in the connection object
-    connection.isConnected = database.connection.readyState;
+    connection.isConnected = connectDB.connection.readyState;
     console.log("Database connection succesfully");
   } catch (error) {
     console.error("database connection failed!", error);
