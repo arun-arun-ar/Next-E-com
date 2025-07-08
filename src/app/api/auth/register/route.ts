@@ -22,16 +22,17 @@ export async function POST(req:NextRequest){
         if (!emailRegex.test(email)) {
             return NextResponse.json({ error: "Invalid email format." }, { status: 400 });
         }
-        if (password.length < 6) {
-            return NextResponse.json({ error: "Password must be at least 6 characters." }, { status: 400 });
+        if (password.length < 8) {
+            return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
         }
 
+        //check for existing user
         const existingUser = await User.findOne({email});
         if(existingUser){
             return NextResponse.json({error: "User already exists using this email"}, {status: 400});
         }
 
-        // Hash the password
+        //verify user
         const token = generateToken();
         try {
           const user = new User({ name, email, password, verificationToken: token });
