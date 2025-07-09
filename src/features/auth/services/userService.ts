@@ -32,3 +32,33 @@ export async function updateUser(
   await user.save();
   return NextResponse.json({message: "User data updated succesfully"}, {status: 200});
 }
+
+
+//delete user by admin
+export async function deleteUser(userId: string){
+    //fetch the user
+    const user = await User.findById(userId);
+    //check if user is availavle or not
+    if(!user)
+        {
+            throw new Error("User not found");
+        }
+        // delete user by id 
+        await User.findByIdAndDelete(userId);
+        return NextResponse.json({message: "User deleted successfylly"}, {status: 200})
+}
+
+//delete vendor by admin
+export async function deleteVenodr(vendorId:string){
+
+    const vendor = await User.findById(vendorId);
+
+    if(!vendor || vendor.role !== 'vendor'){
+        throw new Error("Vendor doesn't exists")
+    };
+
+    await User.findByIdAndDelete(vendorId);
+
+    return NextResponse.json({message: "Vendor deletes succesfully"}, {status: 200});
+}
+

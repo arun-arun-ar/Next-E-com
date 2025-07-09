@@ -1,6 +1,7 @@
 import { connectDatabase } from "@/lib/database";
 import { getUserById, updateUser } from "@/features/auth/services/userService";
 import { NextRequest, NextResponse } from "next/server";
+import {deleteUser} from "@/features/auth/services/userService";
 
 //get user by id a
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -28,4 +29,18 @@ export async function PUT(
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+}
+
+//delete user
+export async function DELETE(
+  req: NextRequest, context: { params: Promise<{ id: string}> }) {
+    try {
+        await connectDatabase();
+        const {id} = await context.params;
+        const result = await deleteUser(id);
+        return result;
+        
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 400 });
+    }
 }
